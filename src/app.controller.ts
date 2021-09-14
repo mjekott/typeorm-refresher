@@ -6,7 +6,10 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getHello(): any {
+    //this.appService.seed();
+    return this.appService.getEmployeeById(2);
+
+    //usign query builder
   }
 }

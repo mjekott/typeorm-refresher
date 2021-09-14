@@ -1,7 +1,9 @@
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -12,7 +14,6 @@ import { Task } from './task.entity';
 
 @Entity()
 export class Employee {
-  [x: string]: any;
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,10 +23,18 @@ export class Employee {
   @OneToOne(() => ContactInfo, (contactInfo) => contactInfo.employee)
   contactInfo: ContactInfo;
 
+  @ManyToOne(() => Employee, (employee) => employee.directReports, {
+    onDelete: 'SET NULL',
+  })
+  manager: Employee;
+
   @OneToMany(() => Task, (task) => task.employee)
   tasks: Task[];
-  directReports: any;
+
+  @OneToMany(() => Employee, (employee) => employee.manager)
+  directReports: Employee[];
 
   @ManyToMany(() => Meeting, (meeting) => meeting.attendees)
+  @JoinTable()
   meetings: Meeting[];
 }
